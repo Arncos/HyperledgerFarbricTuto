@@ -1,0 +1,36 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: mydomain.com
+    Specs:
+      - Hostname: orderer
+
+  - Name: Orderer2
+    Domain: accenture.com
+    Specs:
+      - Hostname: orderer
+
+
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.mydomain.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Org2
+    Domain: org2.mydomain.com
+    EnableNodeOUs: true
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Org3
+    Domain: org3.accenture.com
+    EnableNodeOUs: true
+    Template:
+      Count: 3
+    Users:
+      Count: 2

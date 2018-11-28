@@ -1,0 +1,139 @@
+Profiles:
+
+    TreeOrgsOrdererGenesis:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium12:
+                Organizations:
+                    - *Org1
+                    - *Org2
+            SampleConsortium13:
+                Organizations:
+                    - *Org1
+                    - *Org3
+
+    TreeOrgsChannel:
+        Consortium: SampleConsortium12
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities
+
+    Orgs13Channel:
+        Consortium: SampleConsortium13
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org3
+
+
+    NewTwoOrgsOrderer2Genesis:
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *Orderer2Defaults
+            Organizations:
+                - *Orderer2Org
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium23:
+                Organizations:
+                    - *Org2
+                    - *Org3
+
+    Orgs23Channel:
+        Consortium: SampleConsortium23
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org2
+                - *Org3
+
+
+Organizations:
+
+    - &OrdererOrg
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/mydomain.com/msp
+
+    - &Orderer2Org
+        Name: Orderer2Org
+        ID: Orderer2MSP
+        MSPDir: crypto-config/ordererOrganizations/accenture.com/msp
+
+    - &Org1
+        Name: Org1MSP
+        ID: Org1MSP
+        MSPDir: crypto-config/peerOrganizations/org1.mydomain.com/msp
+        AnchorPeers:
+            - Host: peer0.org1.mydomain.com
+              Port: 7051
+
+    - &Org2
+        Name: Org2MSP
+        ID: Org2MSP
+        MSPDir: crypto-config/peerOrganizations/org2.mydomain.com/msp
+        AnchorPeers:
+            - Host: peer0.org2.mydomain.com
+              Port: 7051
+
+    - &Org3
+            Name: Org3MSP
+            ID: Org3MSP
+            MSPDir: crypto-config/peerOrganizations/org3.accenture.com/msp
+            AnchorPeers:
+                - Host: peer0.org3.accenture.com
+                  Port: 7051
+
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+        - orderer.mydomain.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+
+Orderer: &Orderer2Defaults
+    OrdererType: solo
+    Addresses:
+        - orderer.accenture.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+Application: &ApplicationDefaults
+    Organizations:
+
+Capabilities:
+    Global: &ChannelCapabilities
+        V1_1: true
+    Orderer: &OrdererCapabilities
+        V1_1: true
+    Application: &ApplicationCapabilities
+        V1_1: true
